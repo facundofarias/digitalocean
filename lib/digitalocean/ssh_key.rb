@@ -18,8 +18,8 @@ module Digitalocean
       RecursiveOpenStruct.new(response.body, :recurse_over_arrays => true)
     end
 
-    def self.add(attrs)
-      response = Digitalocean.request.get "ssh_keys/new/?name=#{attrs[:ssh_key_name]}&ssh_pub_key=#{attrs[:ssh_public_key]}"
+    def self.add(ssh_key_name, ssh_public_key)
+      response = Digitalocean.request.get "ssh_keys/new/?name=#{ssh_key_name}&ssh_pub_key=#{ssh_public_key}"
       RecursiveOpenStruct.new(response.body, :recurse_over_arrays => true)
     end
   end
