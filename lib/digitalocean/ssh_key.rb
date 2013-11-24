@@ -24,7 +24,7 @@ module Digitalocean
     end
 
     def self.edit(ssh_key_id=nil)
-      response = Digitalocean.request.get "ssh_keys/#{ssh_key_id}/edit"
+      response = Digitalocean.request.post "ssh_keys/#{ssh_key_id}/edit"
       RecursiveOpenStruct.new(response.body, :recurse_over_arrays => true)
     end
   end
