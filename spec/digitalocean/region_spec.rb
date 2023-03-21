@@ -1,24 +1,18 @@
 require 'spec_helper'
 
 describe Digitalocean::Region do
-  let(:ok)        { "OK" }
-  let(:subject)   { Digitalocean::Region }
+  subject(:region) { described_class }
 
-  context "correct api key" do
-    before do
-      set_client_id_and_api_key!
-    end
+  describe "._all" do
+    let(:url) { region._all }
 
-    describe ".all" do
-      before do
-        @response = subject.all
-      end
+    it { url.should eq "https://api.digitalocean.com/v1/regions/?client_id=client_id_required&api_key=api_key_required" }
+  end
 
-      context "default" do
-        it do
-          @response.status.should eq ok
-        end
-      end
-    end
+  describe "._find" do
+    let(:region_id) { "1234" }
+    let(:url) { region._find(region_id) }
+
+    it { url.should eq "https://api.digitalocean.com/v1/regions/#{region_id}?client_id=client_id_required&api_key=api_key_required" }
   end
 end

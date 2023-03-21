@@ -1,39 +1,41 @@
 require 'spec_helper'
 
 describe Digitalocean::Image do
-  let(:ok)        { "OK" }
-  let(:subject)   { Digitalocean::Image }
+  subject(:image) { described_class }
 
-  context "correct api key" do
-    before do
-      set_client_id_and_api_key!
-    end
+  describe "._all" do
+    let(:url) { image._all }
+    it { url.should eq "https://api.digitalocean.com/v1/images/?client_id=client_id_required&api_key=api_key_required" }
+  end
 
-    describe ".all" do
-      before do
-        @response = subject.all
-      end
+  describe "._all with optional parameters" do
+    let(:args) { { filter: "my_images" } }
+    let(:url) { image._all(args) }
 
-      context "default" do
-        it do
-          @response.status.should eq ok
-        end
-      end
-    end
+    it { url.should eq "https://api.digitalocean.com/v1/images/?client_id=client_id_required&api_key=api_key_required&filter=my_images" }
+  end
 
-    describe ".find" do
-      before do
-        image_id = @response.images.first.id
-        @response2 = subject.retrieve(image_id)
-      end
+  describe "._find" do
+    let(:id) { "1234" }
+    let(:url) { image._find(id) }
 
-      context "default" do
-        it do
-          @response.status.should eq ok
-        end
-      end
-    end
+    it { url.should eq "https://api.digitalocean.com/v1/images/#{id}/?client_id=client_id_required&api_key=api_key_required" }
+  end
 
+  describe "._destroy" do
+    let(:id) { "1234" }
+    let(:url) { image._destroy(id) }
 
+    it { url.should eq "https://api.digitalocean.com/v1/images/#{id}/destroy/?client_id=client_id_required&api_key=api_key_required" }
+  end
+
+  describe "._transfer" do
+    let(:id) { "1234" }
+    let(:region_id) { "44" }
+    let(:args) { {region_id: region_id } }
+
+    let(:url) { image._transfer(id, args) }
+
+    it { url.should eq "https://api.digitalocean.com/v1/images/#{id}/transfer/?client_id=client_id_required&api_key=api_key_required&region_id=44" }
   end
 end

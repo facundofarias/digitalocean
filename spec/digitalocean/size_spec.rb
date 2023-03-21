@@ -1,24 +1,17 @@
 require 'spec_helper'
 
 describe Digitalocean::Size do
-  let(:ok)        { "OK" }
-  let(:subject)   { Digitalocean::Size }
+  subject(:size) { described_class }
 
-  context "correct api key" do
-    before do
-      set_client_id_and_api_key!
-    end
+  describe "._all" do
+    let(:url) { size._all }
+    it { url.should eq "https://api.digitalocean.com/v1/sizes/?client_id=client_id_required&api_key=api_key_required"  }
+  end
 
-    describe ".all" do
-      before do
-        @response = subject.all
-      end
+  describe "._find" do
+    let(:size_id) { "1234" }
+    let(:url) { size._find(size_id) }
 
-      context "default" do
-        it do
-          @response.status.should eq ok
-        end
-      end
-    end
+    it { url.should eq "https://api.digitalocean.com/v1/sizes/#{size_id}?client_id=client_id_required&api_key=api_key_required" }
   end
 end
